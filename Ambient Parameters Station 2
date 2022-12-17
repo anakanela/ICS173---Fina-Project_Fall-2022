@@ -1,0 +1,45 @@
+# Description:Temperature Density Changes from Dec 2020 to Mar 2021
+
+# Importing the libraries
+import pandas as pd
+import numpy as np
+
+
+# plotting libraries
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Importing aps2 database 
+aps2_filepath = "C:/Users/home/Documents/Hawai'i Maui College/ICS 173 - Intro to Statistics/Week17 - Final Project/1Ambient Parameters Station 2 SXC_03-28-22_UTF-8.csv"
+aps2_data = pd.read_csv (aps2_filepath)
+
+#       Cleaning Database
+#getting number of missing data points per column
+missing_values_count = aps2_data.isnull().sum()
+
+#look at the number of missing points in the seven rows
+missing_values_count [0:7]
+
+# total missing values
+total_cells = np.product(aps2_data.shape)
+total_missing = missing_values_count.sum()
+
+# percent of data that is missing
+percent_missing = (total_missing/total_cells) * 100
+print(percent_missing)
+
+# erasing missing data  3 rows 
+aps2_data= aps2_data.drop (labels= [0,31,41], axis=0)
+
+#Renaming columns for use - changed in excel - this code kept showing old ones
+aps2_data.rename (columns={'Ambient Temperature Temp. (¡F):': 'Temperature'})
+aps2_data.rename (columns={'Rellative Humicity (%)': 'RH'})
+
+#   Creating Plots
+
+sns.distplot (aps2_data['RH'])
+plt.title("Temperature Density/RH Changes - Dec 2020 to Mar 2021")
+
+# Conclusion: Both Temperature and RH correlate as Temperatures peaks from  70F to 75F, 
+# In conparison with the RH
+# It is a progresive increase of RH % starting with 65% and and top peak of 78%
